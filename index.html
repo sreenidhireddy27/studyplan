@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Ledger — Student Study Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Drawer label header, like a library card catalog drawer -->
+  <header class="drawer-header">
+    <div class="drawer-label">
+      <span class="drawer-eyebrow">Card Catalog</span>
+      <h1 class="drawer-title">Study Ledger</h1>
+    </div>
+    <div class="drawer-stats" id="drawerStats">
+      <div class="stat">
+        <span class="stat-value" id="statOpen">0</span>
+        <span class="stat-label">open</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="statDueSoon">0</span>
+        <span class="stat-label">due soon</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value" id="statDone">0</span>
+        <span class="stat-label">closed</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="ledger-body">
+
+    <!-- Sidebar: subjects as catalog dividers -->
+    <aside class="dividers" aria-label="Subjects">
+      <div class="dividers-head">
+        <span>Dividers</span>
+        <button id="addSubjectBtn" class="tiny-btn" title="Add subject">+</button>
+      </div>
+      <ul id="subjectList" class="divider-list">
+        <li class="divider-item active" data-subject="all">
+          <span class="divider-tab">All</span>
+          <span class="divider-count" id="countAll">0</span>
+        </li>
+      </ul>
+
+      <div class="dividers-head timer-head">
+        <span>Focus Timer</span>
+      </div>
+      <div class="pomodoro" id="pomodoro">
+        <div class="pomodoro-face">
+          <span id="timerDisplay">25:00</span>
+          <span class="pomodoro-mode" id="timerMode">Focus</span>
+        </div>
+        <div class="pomodoro-controls">
+          <button id="timerStart" class="tiny-btn wide">Start</button>
+          <button id="timerReset" class="tiny-btn">Reset</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main ledger of tasks -->
+    <main class="ledger-main">
+
+      <form id="taskForm" class="new-entry" autocomplete="off">
+        <div class="field grow">
+          <label for="taskTitle">Entry</label>
+          <input type="text" id="taskTitle" placeholder="e.g. Read chapter 4, problem set 3..." required maxlength="120">
+        </div>
+        <div class="field">
+          <label for="taskSubject">Subject</label>
+          <select id="taskSubject" required></select>
+        </div>
+        <div class="field">
+          <label for="taskDue">Due</label>
+          <input type="date" id="taskDue" required>
+        </div>
+        <div class="field">
+          <label for="taskPriority">Priority</label>
+          <select id="taskPriority">
+            <option value="low">Low</option>
+            <option value="normal" selected>Normal</option>
+            <option value="high">High</option>
+          </select>
+        </div>
+        <button type="submit" class="stamp-btn">File Entry</button>
+      </form>
+
+      <div class="ledger-controls">
+        <div class="sort-group" role="group" aria-label="Sort entries">
+          <button class="sort-btn active" data-sort="due">Due date</button>
+          <button class="sort-btn" data-sort="priority">Priority</button>
+          <button class="sort-btn" data-sort="subject">Subject</button>
+        </div>
+        <label class="toggle-hide">
+          <input type="checkbox" id="hideDone">
+          <span>Hide closed</span>
+        </label>
+      </div>
+
+      <ul id="taskList" class="task-ledger"></ul>
+
+      <div id="emptyState" class="empty-state" hidden>
+        <p class="empty-title">The drawer is empty.</p>
+        <p class="empty-sub">File your first entry above to start the ledger.</p>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- Subject creation dialog -->
+  <dialog id="subjectDialog" class="catalog-dialog">
+    <form id="subjectForm" method="dialog">
+      <h2>New Divider</h2>
+      <label for="subjectName">Subject name</label>
+      <input type="text" id="subjectName" maxlength="30" placeholder="e.g. Organic Chemistry" required>
+      <label for="subjectColor">Tab color</label>
+      <div class="color-row" id="colorRow"></div>
+      <input type="hidden" id="subjectColor" value="#35603A">
+      <div class="dialog-actions">
+        <button type="button" id="cancelSubject" class="tiny-btn">Cancel</button>
+        <button type="submit" class="stamp-btn">Add Divider</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
