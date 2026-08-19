@@ -1,0 +1,681 @@
+/* =========================================================
+   Study Ledger — design tokens
+   A student study planner styled like a library card catalog
+   crossed with an accountant's ledger book.
+   ========================================================= */
+
+:root {
+  /* Color */
+  --paper: #efeae0;
+  --paper-raised: #f7f3ea;
+  --paper-shadow: #e2dac6;
+  --ink: #22303c;
+  --ink-soft: #5c6a72;
+  --ink-faint: #8b9399;
+  --green: #35603a;
+  --green-soft: #e4ecdf;
+  --mustard: #c9982f;
+  --mustard-soft: #f5ead0;
+  --red: #a13d3d;
+  --red-soft: #f3e0dc;
+  --line: #c9c2b0;
+  --line-strong: #a89f8a;
+
+  /* Type */
+  --font-display: "Source Serif 4", Georgia, serif;
+  --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", "Courier New", monospace;
+
+  /* Layout */
+  --radius: 3px;
+  --sidebar-width: 260px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    repeating-linear-gradient(
+      var(--paper) 0px,
+      var(--paper) 27px,
+      var(--paper-shadow) 28px
+    );
+  background-attachment: local;
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+button {
+  font-family: inherit;
+}
+
+/* =========================================================
+   Drawer header
+   ========================================================= */
+
+.drawer-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 36px clamp(20px, 4vw, 56px) 20px;
+  border-bottom: 3px solid var(--ink);
+  flex-wrap: wrap;
+}
+
+.drawer-eyebrow {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mustard);
+  margin-bottom: 6px;
+}
+
+.drawer-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(30px, 4vw, 42px);
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.drawer-stats {
+  display: flex;
+  gap: 28px;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 56px;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--ink-soft);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+}
+
+/* =========================================================
+   Body layout
+   ========================================================= */
+
+.ledger-body {
+  display: grid;
+  grid-template-columns: var(--sidebar-width) 1fr;
+  align-items: start;
+}
+
+@media (max-width: 860px) {
+  .ledger-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   Sidebar — dividers
+   ========================================================= */
+
+.dividers {
+  padding: 28px 20px;
+  border-right: 1px solid var(--line-strong);
+  position: sticky;
+  top: 0;
+}
+
+@media (max-width: 860px) {
+  .dividers {
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--line-strong);
+  }
+}
+
+.dividers-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+
+.timer-head {
+  margin-top: 28px;
+}
+
+.tiny-btn {
+  border: 1px solid var(--ink);
+  background: var(--paper-raised);
+  color: var(--ink);
+  border-radius: var(--radius);
+  width: 24px;
+  height: 24px;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.tiny-btn:hover {
+  background: var(--mustard-soft);
+}
+
+.tiny-btn:active {
+  transform: translateY(1px);
+}
+
+.tiny-btn.wide {
+  width: auto;
+  padding: 0 14px;
+  height: 30px;
+}
+
+.divider-list {
+  list-style: none;
+  margin: 0 0 4px;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.divider-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-weight: 500;
+  border-left: 4px solid transparent;
+  transition: background 0.12s ease;
+}
+
+.divider-item:hover {
+  background: var(--paper-raised);
+}
+
+.divider-item.active {
+  background: var(--paper-raised);
+  border-left-color: var(--green);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+.divider-tab {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.divider-count {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-soft);
+  min-width: 18px;
+  text-align: right;
+}
+
+.divider-item.editable {
+  gap: 6px;
+}
+
+.divider-remove {
+  border: none;
+  background: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 0 2px;
+  line-height: 1;
+  visibility: hidden;
+}
+
+.divider-item:hover .divider-remove {
+  visibility: visible;
+}
+
+.divider-remove:hover {
+  color: var(--red);
+}
+
+/* Focus timer */
+
+.pomodoro {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+}
+
+.pomodoro-face {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+#timerDisplay {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.pomodoro-mode {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin-top: 2px;
+}
+
+.pomodoro-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+/* =========================================================
+   Main ledger
+   ========================================================= */
+
+.ledger-main {
+  padding: 28px clamp(20px, 4vw, 56px) 60px;
+  min-width: 0;
+}
+
+.new-entry {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  align-items: end;
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 130px;
+}
+
+.field.grow {
+  flex: 1 1 240px;
+}
+
+.field label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+}
+
+.field input,
+.field select {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 8px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.field input:focus-visible,
+.field select:focus-visible,
+.tiny-btn:focus-visible,
+.stamp-btn:focus-visible,
+.sort-btn:focus-visible,
+.divider-item:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.stamp-btn {
+  border: 2px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.08s ease;
+}
+
+.stamp-btn:hover {
+  background: var(--green);
+  border-color: var(--green);
+}
+
+.stamp-btn:active {
+  transform: translateY(1px);
+}
+
+.ledger-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.sort-group {
+  display: flex;
+  gap: 4px;
+}
+
+.sort-btn {
+  border: 1px solid transparent;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sort-btn:hover {
+  color: var(--ink);
+}
+
+.sort-btn.active {
+  background: var(--paper-raised);
+  border-color: var(--line);
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.toggle-hide {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+/* Task ledger rows */
+
+.task-ledger {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.task-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 4px;
+  border-bottom: 1px solid var(--line);
+  animation: file-in 0.22s ease;
+}
+
+@keyframes file-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .task-row {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "check title"
+      "check meta"
+      "check actions";
+    row-gap: 6px;
+  }
+  .task-row .row-check { grid-area: check; }
+  .task-row .row-title { grid-area: title; }
+  .task-row .row-stamp { grid-area: meta; }
+  .task-row .row-actions { grid-area: actions; }
+  .row-priority { display: none; }
+}
+
+.row-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.row-check input[type="checkbox"] {
+  width: 19px;
+  height: 19px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+
+.row-title {
+  min-width: 0;
+}
+
+.row-title-text {
+  font-weight: 500;
+  overflow-wrap: break-word;
+}
+
+.task-row.done .row-title-text {
+  text-decoration: line-through;
+  color: var(--ink-faint);
+}
+
+.row-subject {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
+  padding: 2px 7px;
+  border-radius: 2px;
+  color: var(--ink);
+}
+
+.row-priority {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+
+.row-priority[data-p="high"] {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.row-priority[data-p="high"]::before {
+  content: "▲ ";
+}
+
+/* The signature element: a rotated due-date stamp, like a library
+   due-date card stamp. Color communicates urgency. */
+.row-stamp {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 5px 10px;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+  transform: rotate(-3deg);
+  white-space: nowrap;
+  color: var(--green);
+  justify-self: start;
+}
+
+.row-stamp[data-urgency="soon"] {
+  color: var(--mustard);
+}
+
+.row-stamp[data-urgency="overdue"] {
+  color: var(--red);
+  transform: rotate(-3deg) scale(1.03);
+}
+
+.row-stamp[data-urgency="done"] {
+  color: var(--ink-faint);
+  transform: rotate(0deg);
+}
+
+.row-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.row-actions button {
+  border: none;
+  background: none;
+  color: var(--ink-faint);
+  cursor: pointer;
+  font-size: 15px;
+  padding: 2px 4px;
+}
+
+.row-actions button:hover {
+  color: var(--red);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink-soft);
+}
+
+.empty-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  color: var(--ink);
+  margin: 0 0 6px;
+}
+
+.empty-sub {
+  margin: 0;
+  font-size: 13px;
+}
+
+/* =========================================================
+   Subject dialog
+   ========================================================= */
+
+.catalog-dialog {
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  padding: 22px;
+  width: min(340px, 90vw);
+  background: var(--paper-raised);
+  color: var(--ink);
+}
+
+.catalog-dialog::backdrop {
+  background: rgba(34, 48, 60, 0.4);
+}
+
+.catalog-dialog h2 {
+  font-family: var(--font-display);
+  margin: 0 0 16px;
+  font-size: 20px;
+}
+
+.catalog-dialog form {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.catalog-dialog label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+.catalog-dialog input[type="text"] {
+  font-family: var(--font-body);
+  font-size: 14px;
+  padding: 8px 9px;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.color-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.color-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+
+.color-swatch.selected {
+  border-color: var(--ink);
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
